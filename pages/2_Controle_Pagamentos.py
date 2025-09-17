@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import datetime
+import io
 
 
 # --- Funções de Lógica ---
@@ -28,7 +29,7 @@ def atualizar_status_pagamento(df_alunos, df_pagamentos):
     return df_alunos
 
 
-@st.cache_data(show_spinner=False)
+# Removido o cache para que os dados sempre sejam lidos do arquivo Excel.
 def get_data_from_excel():
     try:
         df_alunos = pd.read_excel(
@@ -52,7 +53,7 @@ def get_data_from_excel():
         )
 
 
-# --- Carregar dados (vai rodar apenas uma vez) ---
+# --- Carregar dados (vai rodar a cada interação para manter os dados atualizados) ---
 df_alunos_bruto, df_pagamentos = get_data_from_excel()
 df_alunos = atualizar_status_pagamento(df_alunos_bruto, df_pagamentos)
 
@@ -72,7 +73,7 @@ with st.form("form_pagamento", clear_on_submit=True):
     )
 
     data_pagamento = st.date_input("Data do Pagamento")
-    valor = st.number_input("Valor", min_value=0.0, format="%.2f")  # <-- CORRIGIDO AQUI
+    valor = st.number_input("Valor", min_value=0.0, format="%.2f")
 
     submit_button_pagamento = st.form_submit_button("Registrar Pagamento")
 
@@ -108,4 +109,4 @@ df_pagamentos_display = df_pagamentos.copy()
 if not df_pagamentos_display.empty:
     df_pagamentos_display['Data do Pagamento'] = pd.to_datetime(df_pagamentos_display['Data do Pagamento']).dt.strftime(
         '%d/%m/%Y')
-st.dataframe(df_pagamentos_display, use_container_width=True)
+st.dataframe(df_pagamentos_display, width='stretch')
