@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import datetime
+import io
 
 
 # --- Funções de Lógica ---
@@ -113,5 +114,7 @@ with st.form("form_novo_aluno", clear_on_submit=True):
 
 st.subheader("Lista de Alunos Cadastrados")
 df_display = df_alunos.copy()
+# Converte a coluna para o tipo datetime para que .dt funcione
+df_display['Data de Matrícula'] = pd.to_datetime(df_display['Data de Matrícula'])
 df_display['Data de Matrícula'] = df_display['Data de Matrícula'].dt.strftime('%d/%m/%Y')
-st.dataframe(df_display, use_container_width=True)
+st.dataframe(df_display, width='stretch')
