@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import datetime
+import io
 
 
 # --- Funções de Lógica ---
@@ -114,3 +115,14 @@ if not df_pagamentos.empty:
     st.bar_chart(df_faturamento_mensal, x='Mês de Referência', y='Valor')
 else:
     st.info("Nenhum dado de pagamento para exibir o gráfico.")
+
+---
+### Exportar Dados dos Alunos
+
+csv = df_alunos.to_csv(index=False).encode('utf-8')
+st.download_button(
+    label="📥 Baixar dados de alunos",
+    data=csv,
+    file_name='lista_alunos.csv',
+    mime='text/csv',
+)
