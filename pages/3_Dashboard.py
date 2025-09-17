@@ -116,8 +116,7 @@ if not df_pagamentos.empty:
 else:
     st.info("Nenhum dado de pagamento para exibir o gráfico.")
 
----
-### Exportar Dados dos Alunos
+# --- Exportar Dados dos Alunos
 
 csv = df_alunos.to_csv(index=False).encode('utf-8')
 st.download_button(
