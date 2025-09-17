@@ -29,7 +29,7 @@ def atualizar_status_pagamento(df_alunos, df_pagamentos):
     return df_alunos
 
 
-@st.cache_data(show_spinner=False)
+# Removido o cache para que os dados sempre sejam lidos do arquivo Excel.
 def get_data_from_excel():
     try:
         df_alunos = pd.read_excel(
@@ -53,7 +53,7 @@ def get_data_from_excel():
         )
 
 
-# --- Carregar dados (vai rodar apenas uma vez) ---
+# --- Carregar dados (vai rodar a cada interação para manter os dados atualizados) ---
 df_alunos_bruto, df_pagamentos = get_data_from_excel()
 df_alunos = atualizar_status_pagamento(df_alunos_bruto, df_pagamentos)
 
@@ -103,7 +103,7 @@ df_status.loc[df_status['Status Pagamento'] == 'Em dia', 'Status Pagamento'] = '
 df_status.loc[df_status['Status Pagamento'] == 'Atrasado', 'Status Pagamento'] = '🔴 Atrasado'
 df_status.loc[df_status['Status Pagamento'] == 'Novo', 'Status Pagamento'] = '🔵 Novo'
 
-st.dataframe(df_status, use_container_width=True)
+st.dataframe(df_status, width='stretch')
 
 # --- Histórico de Faturamento por Mês ---
 st.markdown("### Faturamento por Mês")
